@@ -11,19 +11,29 @@ Ruby 2.7 introduced a [pattern matching](https://docs.ruby-lang.org/en/master/sy
 
 ## Matching against array or hashes
 
-Pattern matching with Ruby is done via `case` statement with `in` operator:
+Pattern matching in Ruby is done via:
 
-```ruby
-# assuming api.get returns hashes like:
-#   - { success: true|false, data: Object }
-#   - { error: true, message: String }
-case api.get('user', 1)
-in { success: true, data: user }
-  p user
-in { success: false, data: error }
-  p error
-end
-```
+- one line with `in` / `=>` operator (still experimental in Ruby 3.0):
+
+    ```ruby
+    result = { success: true } 
+    result => { success: }
+    success # true
+    ```
+
+- `case` statement with `in` operator:
+
+    ```ruby
+    # assuming api.get returns hashes like:
+    #   - { success: true|false, data: Object }
+    #   - { error: true, message: String }
+    case api.get('user', 1)
+    in { success: true, data: user }
+      p user
+    in { success: false, data: error }
+      p error
+    end
+    ```
 
 To match multiple patterns within one block, use `|`:
 
