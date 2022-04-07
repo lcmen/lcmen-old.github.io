@@ -17,35 +17,45 @@ Start with tapping `petere`'s `Homebrew` repo:
 brew tap petere/postgresql
 ```
 
-Now you can install multiple versions:
+Then install `postgresql-common` package which provides special wrapper scripts for running managing the clusters.
+
+Now you can install multiple PostgreSQL versions:
 
 ```
-brew install postgresql-9.3
-brew install postgresql-9.6
+brew install postgresql@11
+brew install postgresql@12
 ```
-
-I recommend to install `postgresql-common` which provides special wrapper scripts for running managing the clusters.
 
 ## Usage
 
-Before starting the database, you need to create a cluster:
+Before starting the database server, you need to create a cluster. You can do it with: `pg_createcluster {version} {name}` command, for example:
 
 ```
-pg_createcluster 9.6 main
+pg_createcluster 11 main
 ```
 
-where `9.6` is postgres version and `main` is the name of the cluster to use. After that you can use `psql` to connected to newly created cluster:
+You can also specify port to associate with cluster using `-p` option (I use this simple rule to easily remember port for each version: **11** - *5431*, **12** - *5432*, **13** - *5433*, and so on):
 
 ```
-psql --cluster 9.6/main -d postgres
+pg_createcluster 11 main -p 5431
+```
+
+To connect to newly created cluster with `psql` provide cluster-version pair with `--cluster` option:
+
+```
+psql --cluster 11/main -d postgres
+```
+
+If you prefer to use user with password authentication instead of `peer`, specify `-h localhost`:
+
+```
+psql --cluster 11/main -d postgres -h localhost
 ```
 
 ## Cheatsheet
 
 - `pg_lsclusters` list all clusters
 - `pg_dropcluster` remove a cluster
-- `pg_ctlcluster 9.6 main start` start a cluster
-- `pg_ctlcluster 9.6 main stop` stop a cluster
-- `pg_ctlcluster 9.6 main status` check claster's status
-
-NOTE: In all above examples `9.6` is a PostgreSQL version and `main` is the name of the cluster to use.
+- `pg_ctlcluster {version} {name} start` start a cluster
+- `pg_ctlcluster {version} {name} stop` stop a cluster
+- `pg_ctlcluster {version} {name} status` check claster's status
