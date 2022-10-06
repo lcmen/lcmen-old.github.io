@@ -15,7 +15,7 @@ The fix them, you need to obtain `libpq` from Homebrew and configure `bundler` t
 
 The full solution strips down into 2 commands:
 
-1. `bundle install libpq`
+1. `brew install libpq`
 2. `bundle config set --global build.pg --with-pg-config=/opt/homebrew/opt/libpq/bin/pg_config`
 
 Now you can run `bundle install` and keep developing as usual.
