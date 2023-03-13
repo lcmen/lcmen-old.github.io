@@ -75,8 +75,11 @@ defmodule YourAppWeb.Layouts do
 
   embed_templates "layouts/*"
 
-  def head_content(%{phoenix_layout: %{"html" => {__MODULE__, layout}}}) do
-    scripts_for(layout)
+  def scripts(%{phoenix_layout: layout}) do
+    case layout do
+      %{"html" => {__MODULE__, html_layout}} -> scripts_for(html_layout)
+      %{_: false} -> nil
+    end
   end
 
   defp head_content_for(:app) do
